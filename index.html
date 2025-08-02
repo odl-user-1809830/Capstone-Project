@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    .calculator {
+      background: #fff;
+      padding: 20px;
+      border-radius: 7px;
+      display: inline-block;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    }
+    .calculator input[type="text"] {
+      width: 100%;
+      height: 40px;
+      font-size: 1.2em;
+      margin-bottom: 10px;
+      text-align: right;
+      padding: 0 10px;
+    }
+    .calculator button {
+      width: 22%;
+      height: 50px;
+      font-size: 1.1em;
+      margin: 1%;
+      cursor: pointer;
+      background: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+    .calculator button:hover {
+      background: #0056b3;
+    }
+    .calculator .result {
+      background: #28a745;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <input type="text" id="display" disabled />
+    <br>
+    <button onclick="appendValue('7')">7</button>
+    <button onclick="appendValue('8')">8</button>
+    <button onclick="appendValue('9')">9</button>
+    <button onclick="operation('/')">/</button>
+    <br>
+    <button onclick="appendValue('4')">4</button>
+    <button onclick="appendValue('5')">5</button>
+    <button onclick="appendValue('6')">6</button>
+    <button onclick="operation('*')">x</button>
+    <br>
+    <button onclick="appendValue('1')">1</button>
+    <button onclick="appendValue('2')">2</button>
+    <button onclick="appendValue('3')">3</button>
+    <button onclick="operation('-')">-</button>
+    <br>
+    <button onclick="clearDisplay()">C</button>
+    <button onclick="appendValue('0')">0</button>
+    <button onclick="calculateResult()" class="result">=</button>
+    <button onclick="operation('+')">+</button>
+  </div>
+
+  <script>
+    let displayValue = '';
+    let currentOperation = null;
+    let firstOperand = null;
+
+    function appendValue(value) {
+      displayValue += value;
+      updateDisplay();
+    }
+
+    function operation(op) {
+      if (currentOperation && displayValue !== '') {
+        calculateResult();
+      }
+      firstOperand = parseFloat(displayValue);
+      currentOperation = op;
+      displayValue = '';
+      updateDisplay();
+    }
+
+    function calculateResult() {
+      if (currentOperation && firstOperand !== null && displayValue !== '') {
+        let secondOperand = parseFloat(displayValue);
+        switch (currentOperation) {
+          case '+':
+            displayValue = (firstOperand + secondOperand).toString();
+            break;
+          case '-':
+            displayValue = (firstOperand - secondOperand).toString();
+            break;
+          case '*':
+            displayValue = (firstOperand * secondOperand).toString();
+            break;
+          case '/':
+            if (secondOperand !== 0) {
+              displayValue = (firstOperand / secondOperand).toString();
+            } else {
+              displayValue = 'Error';
+            }
+            break;
+        }
+      }
+      currentOperation = null;
+      firstOperand = null;
+      updateDisplay();
+    }
+
+    function clearDisplay() {
+      displayValue = '';
+      currentOperation = null;
+      firstOperand = null;
+      updateDisplay();
+    }
+
+    function updateDisplay() {
+      document.getElementById('display').value = displayValue;
+    }
+  </script>
+</body>
+</html>
